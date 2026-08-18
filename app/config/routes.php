@@ -24,9 +24,6 @@ $router->get('/student', 'StudentController::index');
 // Grant Student Access
 $router->get('/student/access', 'StudentController::access');
 
-// Student Logout
-$router->get('/student/logout', 'StudentController::logout');
-
 // Student Profile
 $router->get('/student/profile', 'StudentController::profile')
       ->middleware('student');
