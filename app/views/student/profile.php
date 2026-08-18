@@ -1,141 +1,1009 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Student Profile</title>
+    <title>
+        Student Profile | <?= htmlspecialchars($student['name']); ?>
+    </title>
 
     <style>
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
+
+        /* =========================
+           BODY
+        ========================== */
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #fff5fa;
-            color: #333;
-        }
 
-        nav {
-            background: #d98cb3;
-            padding: 18px;
-            text-align: center;
-        }
+            font-family: 'Segoe UI', Arial, sans-serif;
 
-        nav a {
+            min-height: 100vh;
+
+            padding: 40px 20px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(255, 105, 180, 0.22),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(231, 139, 179, 0.18),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #160b18,
+                    #2a1025,
+                    #180c20
+                );
+
             color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
+
+            position: relative;
+
+            overflow-x: hidden;
+
         }
 
-        nav a:hover {
-            text-decoration: underline;
+
+        /* =========================
+           DIGITAL GRID
+        ========================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(255, 105, 180, 0.06) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255, 105, 180, 0.06) 1px,
+                    transparent 1px
+                );
+
+            background-size: 40px 40px;
+
+            pointer-events: none;
+
+            z-index: 0;
+
         }
 
-        .container {
-            width: 90%;
-            max-width: 700px;
-            margin: 40px auto;
+
+        /* =========================
+           GLOW
+        ========================== */
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 400px;
+
+            height: 400px;
+
+            border-radius: 50%;
+
+            background: rgba(244, 143, 177, 0.12);
+
+            filter: blur(100px);
+
+            right: -150px;
+
+            top: -120px;
+
+            pointer-events: none;
+
+            z-index: 0;
+
         }
+
+
+        /* =========================
+           MAIN CARD
+        ========================== */
 
         .card {
-            background: white;
-            padding: 35px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 100%;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            padding: 40px;
+
+            background: rgba(255,255,255,0.07);
+
+            backdrop-filter: blur(18px);
+
+            -webkit-backdrop-filter: blur(18px);
+
+            border: 1px solid rgba(255,182,213,0.22);
+
+            border-radius: 24px;
+
+            box-shadow:
+
+                0 25px 60px rgba(0,0,0,0.45),
+
+                0 0 40px rgba(244,143,177,0.08);
+
         }
 
-        h1 {
+
+        /* =========================
+           TOP GLOW LINE
+        ========================== */
+
+        .top-line {
+
+            width: 70px;
+
+            height: 4px;
+
+            margin: 0 auto 25px;
+
+            border-radius: 20px;
+
+            background: #f48fb1;
+
+            box-shadow:
+
+                0 0 10px #f48fb1,
+
+                0 0 25px rgba(244,143,177,0.8);
+
+        }
+
+
+        /* =========================
+           PROFILE HEADER
+        ========================== */
+
+        .profile-header {
+
             text-align: center;
-            color: #c45d91;
-            margin-bottom: 30px;
+
+            margin-bottom: 25px;
+
         }
 
-        .info {
-            padding: 12px;
-            border-bottom: 1px solid #f0d5e2;
+
+        .profile-icon {
+
+            width: 90px;
+
+            height: 90px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 40px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #d86f9e,
+                    #f48fb1
+                );
+
+            border: 3px solid rgba(255,255,255,0.3);
+
+            box-shadow:
+
+                0 0 20px rgba(244,143,177,0.35),
+
+                0 0 40px rgba(244,143,177,0.15);
+
         }
 
-        .label {
-            font-weight: bold;
-            color: #c45d91;
+
+        .profile-name {
+
+            color: #ffffff;
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+            text-shadow:
+
+                0 0 15px rgba(244,143,177,0.35);
+
         }
 
-        .back {
-            display: block;
+
+        .profile-title {
+
+            color: #c9aebc;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =========================
+           ACCESS BADGE
+        ========================== */
+
+        .lock-badge {
+
+            display: flex;
+
             width: fit-content;
-            margin: 25px auto 0;
-            padding: 12px 25px;
-            background: #d98cb3;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
+
+            margin: 0 auto 30px;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 7px 15px;
+
+            border-radius: 30px;
+
+            background: rgba(231,139,179,0.12);
+
+            border: 1px solid rgba(244,143,177,0.35);
+
+            color: #ffb5d1;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            box-shadow:
+
+                0 0 15px rgba(244,143,177,0.08);
+
         }
 
-        .back:hover {
-            background: #c56f9c;
+
+        .online-dot {
+
+            width: 8px;
+
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #ff8fbd;
+
+            box-shadow:
+
+                0 0 8px #ff8fbd,
+
+                0 0 15px #ff8fbd;
+
         }
+
+
+        /* =========================
+           SECTION TITLE
+        ========================== */
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #ffffff;
+
+            font-size: 19px;
+
+            margin-bottom: 18px;
+
+            padding-bottom: 12px;
+
+            border-bottom: 1px solid rgba(244,143,177,0.2);
+
+        }
+
+
+        .section-title span {
+
+            color: #f48fb1;
+
+        }
+
+
+        /* =========================
+           INFORMATION TABLE
+        ========================== */
+
+        .info-table {
+
+            width: 100%;
+
+            border-collapse: separate;
+
+            border-spacing: 0 7px;
+
+        }
+
+
+        .info-table tr {
+
+            background: rgba(255,255,255,0.035);
+
+        }
+
+
+        .info-table td {
+
+            padding: 13px 14px;
+
+            font-size: 13px;
+
+            border-top: 1px solid rgba(255,255,255,0.03);
+
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+
+        }
+
+
+        .info-table td:first-child {
+
+            width: 38%;
+
+            color: #f1a8c4;
+
+            font-weight: 700;
+
+            border-left: 2px solid #d86f9e;
+
+            border-radius: 8px 0 0 8px;
+
+        }
+
+
+        .info-table td:last-child {
+
+            color: #e2d3da;
+
+            border-radius: 0 8px 8px 0;
+
+        }
+
+
+        .info-table tr:hover {
+
+            background: rgba(244,143,177,0.07);
+
+        }
+
+
+        /* =========================
+           SOCIAL MEDIA
+        ========================== */
+
+        .social-section {
+
+            margin-top: 30px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid rgba(244,143,177,0.2);
+
+        }
+
+
+        .social-section h2 {
+
+            color: #ffffff;
+
+            font-size: 19px;
+
+            text-align: center;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .social-links {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 10px;
+
+        }
+
+
+        .social-link {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            padding: 12px 10px;
+
+            border-radius: 10px;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition: 0.3s ease;
+
+        }
+
+
+        .social-link:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow:
+
+                0 8px 20px rgba(0,0,0,0.25);
+
+        }
+
+
+        /* FACEBOOK */
+
+        .facebook {
+
+            background: rgba(24,119,242,0.85);
+
+            border: 1px solid rgba(24,119,242,0.5);
+
+        }
+
+
+        .facebook:hover {
+
+            background: #1877F2;
+
+        }
+
+
+        /* INSTAGRAM */
+
+        .instagram {
+
+            background: rgba(228,64,95,0.85);
+
+            border: 1px solid rgba(228,64,95,0.5);
+
+        }
+
+
+        .instagram:hover {
+
+            background: #E4405F;
+
+        }
+
+
+        /* TIKTOK */
+
+        .tiktok {
+
+            background: rgba(20,20,20,0.9);
+
+            border: 1px solid rgba(255,255,255,0.15);
+
+        }
+
+
+        .tiktok:hover {
+
+            background: #111111;
+
+        }
+
+
+        .social-icon {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================== */
+
+        nav {
+
+            margin-top: 30px;
+
+            display: flex;
+
+            justify-content: center;
+
+        }
+
+
+        nav a {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 12px 28px;
+
+            border-radius: 10px;
+
+            color: #ffffff;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #d86f9e,
+                    #f48fb1
+                );
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.3s ease;
+
+            box-shadow:
+
+                0 5px 15px rgba(216,111,158,0.2);
+
+        }
+
+
+        nav a:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+
+                0 10px 30px rgba(244,143,177,0.35);
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        .footer {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid rgba(255,255,255,0.07);
+
+            color: #806b76;
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 20px 12px;
+
+            }
+
+            .card {
+
+                padding: 28px 20px;
+
+            }
+
+            .profile-name {
+
+                font-size: 24px;
+
+            }
+
+            .social-links {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .social-link {
+
+                width: 100%;
+
+            }
+
+            .info-table td {
+
+                font-size: 12px;
+
+                padding: 11px 9px;
+
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
- <nav>
-    <a href="/student">Home</a>
-    <a href="/student/profile">Student Profile</a>
-</nav>
 
-    <div class="container">
+    <div class="card">
 
-        <div class="card">
 
-            <h1>Student Information</h1>
+        <!-- TOP GLOW -->
 
-            <div class="info">
-                <span class="label">Student ID:</span>
-                <?= $student_id; ?>
+        <div class="top-line"></div>
+
+
+        <!-- PROFILE HEADER -->
+
+        <div class="profile-header">
+
+            <div class="profile-icon">
+                👤
             </div>
 
-            <div class="info">
-                <span class="label">Name:</span>
-                <?= $name; ?>
+            <div class="profile-name">
+
+                <?= htmlspecialchars($student['name']); ?>
+
             </div>
 
-            <div class="info">
-                <span class="label">Course:</span>
-                <?= $course; ?>
-            </div>
+            <div class="profile-title">
 
-            <div class="info">
-                <span class="label">Year Level:</span>
-                <?= $year; ?>
-            </div>
+                Student Profile • LavaLust System
 
-            <div class="info">
-                <span class="label">Section:</span>
-                <?= $section; ?>
             </div>
-
-            <div class="info">
-                <span class="label">Email:</span>
-                <?= $email; ?>
-            </div>
-
-            <div class="info">
-                <span class="label">Hobby:</span>
-                <?= $hobby; ?>
-            </div>
-
-             <a class="back" href="/student">
-    Back to Home
-</a>
 
         </div>
 
+
+        <!-- ACCESS STATUS -->
+
+        <div class="lock-badge">
+
+            <span class="online-dot"></span>
+
+            Access Granted by StudentMiddleware
+
+        </div>
+
+
+        <!-- INFORMATION -->
+
+        <h2 class="section-title">
+
+            <span>▣</span>
+
+            Student Information
+
+        </h2>
+
+
+        <table class="info-table">
+
+
+            <!-- STUDENT ID -->
+
+            <tr>
+
+                <td>Student ID</td>
+
+                <td>
+                    <?= htmlspecialchars($student['student_id']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- NAME -->
+
+            <tr>
+
+                <td>Name</td>
+
+                <td>
+                    <?= htmlspecialchars($student['name']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- COURSE -->
+
+            <tr>
+
+                <td>Course</td>
+
+                <td>
+                    <?= htmlspecialchars($student['course']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- YEAR -->
+
+            <tr>
+
+                <td>Year Level</td>
+
+                <td>
+                    <?= htmlspecialchars($student['year']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- SECTION -->
+
+            <tr>
+
+                <td>Section</td>
+
+                <td>
+                    <?= htmlspecialchars($student['section']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- EMAIL -->
+
+            <tr>
+
+                <td>Email</td>
+
+                <td>
+                    <?= htmlspecialchars($student['email']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- ADDRESS -->
+
+            <tr>
+
+                <td>Address</td>
+
+                <td>
+                    <?= htmlspecialchars($student['address']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- CONTACT -->
+
+            <tr>
+
+                <td>Contact No.</td>
+
+                <td>
+                    <?= htmlspecialchars($student['contact_no']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- HOBBIES -->
+
+            <tr>
+
+                <td>Hobbies</td>
+
+                <td>
+                    <?= htmlspecialchars($student['hobbies']); ?>
+                </td>
+
+            </tr>
+
+
+            <!-- ABOUT -->
+
+            <tr>
+
+                <td>About</td>
+
+                <td>
+                    <?= htmlspecialchars($student['description']); ?>
+                </td>
+
+            </tr>
+
+
+        </table>
+
+
+
+        <!-- SOCIAL MEDIA -->
+
+        <div class="social-section">
+
+
+            <h2>
+                Connect With Me
+            </h2>
+
+
+            <div class="social-links">
+
+
+                <!-- FACEBOOK -->
+
+                <a
+                    href="https://www.facebook.com/allyssamae.macalalad"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-link facebook"
+                >
+
+                    <span class="social-icon">
+                        f
+                    </span>
+
+                    Facebook
+
+                </a>
+
+
+                <!-- INSTAGRAM -->
+
+                <a
+                    href="https://www.instagram.com/jst_lyssa0?igsh=ZzNxem8zOHo4NjM2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-link instagram"
+                >
+
+                    <span class="social-icon">
+                        ◎
+                    </span>
+
+                    Instagram
+
+                </a>
+
+
+                <!-- TIKTOK -->
+
+                <a
+                    href="https://www.tiktok.com/@alaysamey0?_r=1&_t=ZS-98yuFd7GqpQ"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-link tiktok"
+                >
+
+                    <span class="social-icon">
+                        ♪
+                    </span>
+
+                    TikTok
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- HOME BUTTON -->
+
+        <nav>
+
+            <a href="/LavaLust/index.php/student">
+
+                🏠 Back to Home
+
+            </a>
+
+        </nav>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            LAVALUST • STUDENT INFORMATION SYSTEM
+
+        </div>
+
+
     </div>
 
+
 </body>
+
 </html>

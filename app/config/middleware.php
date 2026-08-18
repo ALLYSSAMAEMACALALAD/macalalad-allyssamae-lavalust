@@ -41,6 +41,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 | Used for adding middlewares
 |
 */
-$config['middlewares'] = [];
+require_once APP_DIR . 'middlewares' . DIRECTORY_SEPARATOR . 'StudentMiddleware.php';
 
-;
+$config['middlewares'] = [
+    'student' => new StudentMiddleware(),
+];

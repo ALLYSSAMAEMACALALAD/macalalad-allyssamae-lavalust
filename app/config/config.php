@@ -79,7 +79,7 @@ $config['environment'] = getenv('APP_ENV') ?: 'development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] = 'http://127.0.0.1/';
+$config['base_url'] 				= '';
 
 /*
 |--------------------------------------------------------------------------
@@ -99,8 +99,8 @@ $config['proxy_enabled']           = FALSE;
 | variable to blank.
 |
 */
-$config['index_page'] = '';
-;
+$config['index_page']               = 'index.php';
+
 /*
 |--------------------------------------------------------------------------
 | Error Logging Threshold
@@ -348,5 +348,13 @@ $config['csrf_token_name']         = 'csrf_test_name';
 $config['csrf_cookie_name']        = 'csrf_cookie_name';
 $config['csrf_expire']             = 7200;
 $config['csrf_regenerate']         = FALSE;
-?>
 
+/*
+|--------------------------------------------------------------------------
+| Middlewares
+|--------------------------------------------------------------------------
+| Loads the middleware map (app/config/middleware.php) into this same
+| $config array so the kernel Middleware class can find $config['middlewares'].
+*/
+require_once(APP_DIR . 'config/middleware.php');
+?>
