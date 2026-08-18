@@ -582,6 +582,10 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             justify-content: center;
 
+            gap: 12px;
+
+            flex-wrap: wrap;
+
         }
 
 
@@ -601,6 +605,21 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             color: #ffffff;
 
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.3s ease;
+
+        }
+
+
+        /* BACK TO STUDENT HOME */
+
+        .student-home {
+
             background:
 
                 linear-gradient(
@@ -611,14 +630,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             border: 1px solid rgba(255,255,255,0.2);
 
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            transition: 0.3s ease;
-
             box-shadow:
 
                 0 5px 15px rgba(216,111,158,0.2);
@@ -626,13 +637,41 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         }
 
 
-        nav a:hover {
+        .student-home:hover {
 
             transform: translateY(-3px);
 
             box-shadow:
 
                 0 10px 30px rgba(244,143,177,0.35);
+
+        }
+
+
+        /* LAVALUST LANDING PAGE */
+
+        .lavalust-home {
+
+            background: rgba(255,255,255,0.05);
+
+            border: 1px solid rgba(244,143,177,0.25);
+
+            color: #f8bfd5;
+
+        }
+
+
+        .lavalust-home:hover {
+
+            background: rgba(244,143,177,0.12);
+
+            border-color: #f48fb1;
+
+            transform: translateY(-3px);
+
+            box-shadow:
+
+                0 8px 20px rgba(244,143,177,0.15);
 
         }
 
@@ -704,6 +743,18 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             }
 
+            nav {
+
+                flex-direction: column;
+
+            }
+
+            nav a {
+
+                width: 100%;
+
+            }
+
         }
 
     </style>
@@ -770,8 +821,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         <table class="info-table">
 
 
-            <!-- STUDENT ID -->
-
             <tr>
 
                 <td>Student ID</td>
@@ -782,8 +831,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             </tr>
 
-
-            <!-- NAME -->
 
             <tr>
 
@@ -796,8 +843,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </tr>
 
 
-            <!-- COURSE -->
-
             <tr>
 
                 <td>Course</td>
@@ -808,8 +853,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             </tr>
 
-
-            <!-- YEAR -->
 
             <tr>
 
@@ -822,8 +865,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </tr>
 
 
-            <!-- SECTION -->
-
             <tr>
 
                 <td>Section</td>
@@ -834,8 +875,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             </tr>
 
-
-            <!-- EMAIL -->
 
             <tr>
 
@@ -848,8 +887,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </tr>
 
 
-            <!-- ADDRESS -->
-
             <tr>
 
                 <td>Address</td>
@@ -860,8 +897,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             </tr>
 
-
-            <!-- CONTACT -->
 
             <tr>
 
@@ -874,8 +909,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </tr>
 
 
-            <!-- HOBBIES -->
-
             <tr>
 
                 <td>Hobbies</td>
@@ -886,8 +919,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             </tr>
 
-
-            <!-- ABOUT -->
 
             <tr>
 
@@ -903,16 +934,13 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         </table>
 
 
-
         <!-- SOCIAL MEDIA -->
 
         <div class="social-section">
 
-
             <h2>
                 Connect With Me
             </h2>
-
 
             <div class="social-links">
 
@@ -973,23 +1001,28 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             </div>
 
-
         </div>
 
 
-
-        <!-- HOME BUTTON -->
+        <!-- NAVIGATION -->
 
         <nav>
 
-            <a href="/LavaLust/index.php/student">
+
+            <!-- BACK TO STUDENT HOME -->
+
+            <a
+                href="<?= site_url('student'); ?>"
+                class="student-home"
+            >
 
                 🏠 Back to Home
 
             </a>
 
-        </nav>
 
+
+        </nav>
 
 
         <!-- FOOTER -->

@@ -1,17 +1,18 @@
-<?php  
-defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');  
-?> 
- 
-<!DOCTYPE html>  
-<html lang="en">  
- 
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
- 
+<?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>
         Student Home | <?= htmlspecialchars($student['name']); ?>
-    </title>  
+    </title>
 
     <style>
 
@@ -29,40 +30,65 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             justify-content: center;
             padding: 30px;
 
-            /* TECHY PINK BACKGROUND */
             background:
-                radial-gradient(circle at 20% 20%, rgba(255, 105, 180, 0.25), transparent 30%),
-                radial-gradient(circle at 80% 80%, rgba(231, 139, 179, 0.25), transparent 30%),
-                linear-gradient(135deg, #160b18, #2a1025, #180c20);
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(255, 105, 180, 0.25),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(231, 139, 179, 0.25),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #160b18,
+                    #2a1025,
+                    #180c20
+                );
 
             color: #fff;
             overflow: hidden;
             position: relative;
         }
 
-        /* DIGITAL GRID BACKGROUND */
         body::before {
             content: "";
+
             position: absolute;
             inset: 0;
 
             background-image:
-                linear-gradient(rgba(255, 105, 180, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 105, 180, 0.08) 1px, transparent 1px);
+                linear-gradient(
+                    rgba(255, 105, 180, 0.08) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255, 105, 180, 0.08) 1px,
+                    transparent 1px
+                );
 
             background-size: 40px 40px;
             pointer-events: none;
         }
 
-        /* GLOWING CIRCLES */
         body::after {
             content: "";
+
             position: absolute;
+
             width: 350px;
             height: 350px;
+
             border-radius: 50%;
 
             background: rgba(231, 139, 179, 0.15);
+
             filter: blur(80px);
 
             top: -100px;
@@ -71,7 +97,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             pointer-events: none;
         }
 
-        /* MAIN CARD */
         .card {
             position: relative;
             z-index: 2;
@@ -82,10 +107,12 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             padding: 45px;
 
             background: rgba(255, 255, 255, 0.08);
+
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
 
             border: 1px solid rgba(255, 182, 213, 0.25);
+
             border-radius: 24px;
 
             box-shadow:
@@ -95,7 +122,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             text-align: center;
         }
 
-        /* TOP LINE */
         .top-line {
             width: 70px;
             height: 4px;
@@ -111,7 +137,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                 0 0 20px rgba(244, 143, 177, 0.7);
         }
 
-        /* BADGE */
         .badge {
             display: inline-flex;
             align-items: center;
@@ -134,12 +159,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             text-transform: uppercase;
 
             margin-bottom: 20px;
-
-            box-shadow:
-                0 0 15px rgba(244, 143, 177, 0.08);
         }
 
-        /* STATUS DOT */
         .status-dot {
             width: 8px;
             height: 8px;
@@ -169,7 +190,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
         }
 
-        /* HEADING */
         h1 {
             color: #fff;
 
@@ -187,7 +207,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             color: #f48fb1;
         }
 
-        /* SUBTITLE */
         p.sub {
             color: #d8c5cf;
 
@@ -198,36 +217,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             margin-bottom: 30px;
         }
 
-        /* SYSTEM INFO */
-        .system-info {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-
-            margin-bottom: 25px;
-
-            flex-wrap: wrap;
-        }
-
-        .info-box {
-            padding: 8px 13px;
-
-            background: rgba(255,255,255,0.05);
-
-            border: 1px solid rgba(255,255,255,0.1);
-
-            border-radius: 8px;
-
-            color: #cfaebd;
-
-            font-size: 11px;
-        }
-
-        .info-box strong {
-            color: #f8a9c6;
-        }
-
-        /* NAVIGATION */
         nav {
             display: flex;
 
@@ -246,7 +235,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             display: inline-flex;
 
             align-items: center;
-
             justify-content: center;
 
             gap: 8px;
@@ -266,27 +254,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             overflow: hidden;
         }
 
-        /* HOME BUTTON */
-        .home-btn {
-            color: #f8bfd5;
-
-            background: rgba(255,255,255,0.05);
-
-            border: 1px solid rgba(244,143,177,0.25);
-        }
-
-        .home-btn:hover {
-            background: rgba(244,143,177,0.12);
-
-            border-color: #f48fb1;
-
-            transform: translateY(-3px);
-
-            box-shadow:
-                0 8px 20px rgba(244,143,177,0.15);
-        }
-
-        /* PROFILE BUTTON */
         .profile-btn {
             color: #fff;
 
@@ -309,7 +276,25 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                 0 10px 30px rgba(244,143,177,0.35);
         }
 
-        /* ACCESS MESSAGE */
+        .lavalust-btn {
+            color: #f8bfd5;
+
+            background: rgba(255,255,255,0.05);
+
+            border: 1px solid rgba(244,143,177,0.25);
+        }
+
+        .lavalust-btn:hover {
+            background: rgba(244,143,177,0.12);
+
+            border-color: #f48fb1;
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 20px rgba(244,143,177,0.15);
+        }
+
         .note {
             padding: 15px;
 
@@ -351,7 +336,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             text-decoration: underline;
         }
 
-        /* FOOTER */
         .footer {
             margin-top: 25px;
 
@@ -366,7 +350,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             letter-spacing: 1px;
         }
 
-        /* RESPONSIVE */
         @media (max-width: 500px) {
 
             body {
@@ -397,16 +380,14 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
     </style>
 
-</head>  
- 
-<body>  
- 
+</head>
+
+<body>
+
     <div class="card">
 
-        <!-- TOP GLOWING LINE -->
         <div class="top-line"></div>
 
-        <!-- SYSTEM BADGE -->
         <span class="badge">
 
             <span class="status-dot"></span>
@@ -415,36 +396,44 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
         </span>
 
-        <!-- WELCOME -->
         <h1>
-            Welcome, <span><?= htmlspecialchars($student['name']); ?></span>!
+
+            Welcome,
+            <span>
+                <?= htmlspecialchars($student['name']); ?>
+            </span>!
+
         </h1>
 
         <p class="sub">
+
             Your personal student information dashboard.
             Access your profile and manage your student information
             through the LavaLust system.
+
         </p>
 
-        <!-- SYSTEM INFORMATION -->
-        <div class="system-info">
-
-        </div>
 
         <!-- NAVIGATION -->
+
         <nav>
 
-            <!-- STUDENT PROFILE -->
-            <a 
-                href="/LavaLust/index.php/student/profile"
+            <!-- PROFILE -->
+
+            <a
+                href="<?= site_url('student/profile'); ?>"
                 class="profile-btn"
             >
+
                 👤 Student Profile
+
             </a>
 
         </nav>
 
+
         <!-- ACCESS INFORMATION -->
+
         <p class="note">
 
             🔐 The Student Profile page is protected by
@@ -456,23 +445,26 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             <a
                 class="grant-link"
-                href="/LavaLust/index.php/student/profile"
+                href="<?= site_url('student/access'); ?>"
             >
+
                 here to grant access
+
             </a>
 
             before opening your profile.
 
         </p>
 
-        <!-- FOOTER -->
+
         <div class="footer">
 
             LAVALUST • STUDENT PORTAL
 
         </div>
 
-    </div>  
- 
-</body>  
+    </div>
+
+</body>
+
 </html>

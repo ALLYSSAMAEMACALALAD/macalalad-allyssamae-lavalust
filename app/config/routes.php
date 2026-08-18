@@ -4,26 +4,60 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
-| HOME / LANDING PAGE
+| MAIN LANDING PAGE
+|--------------------------------------------------------------------------
+| Student Home ang default landing page
 |--------------------------------------------------------------------------
 */
 
-// Main landing page
 $router->get('/', 'StudentController::index');
 
 
 /*
 |--------------------------------------------------------------------------
-| STUDENT ROUTES
+| ORIGINAL LAVALUST LANDING PAGE
+|--------------------------------------------------------------------------
+| Secondary page ng application
 |--------------------------------------------------------------------------
 */
 
-// Student Home
+$router->get('/lavalust', 'Welcome::index');
+
+
+/*
+|--------------------------------------------------------------------------
+| STUDENT HOME
+|--------------------------------------------------------------------------
+*/
+
 $router->get('/student', 'StudentController::index');
 
-// Grant Student Access
+
+/*
+|--------------------------------------------------------------------------
+| STUDENT ACCESS
+|--------------------------------------------------------------------------
+*/
+
 $router->get('/student/access', 'StudentController::access');
 
-// Student Profile
-$router->get('/student/profile', 'StudentController::profile')
-      ->middleware('student');
+
+/*
+|--------------------------------------------------------------------------
+| STUDENT LOGOUT
+|--------------------------------------------------------------------------
+*/
+
+$router->get('/student/logout', 'StudentController::logout');
+
+
+/*
+|--------------------------------------------------------------------------
+| STUDENT PROFILE
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/student/profile',
+    'StudentController::profile'
+)->middleware('student');
