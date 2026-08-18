@@ -434,11 +434,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         <!-- NAVIGATION -->
         <nav>
 
-            <!-- HOME -->
-           <a href="/LavaLust/index.php/lavalust">
-    🏠 Home
-</a>
-
             <!-- STUDENT PROFILE -->
             <a 
                 href="/LavaLust/index.php/student/profile"
