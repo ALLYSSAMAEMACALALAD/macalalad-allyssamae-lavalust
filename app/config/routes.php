@@ -44,8 +44,8 @@ defined('PREVENT_DIRECT_ACCESS') or exit('No direct script access allowed');
 */
 /** @var object $router **/
 
-$router->get('/', 'Userscontroller::getUsers');
-$router->get('/users', 'Userscontroller::getUsers');
+$router->get('/', 'UsersController::getUsers');
+$router->get('/users', 'UsersController::getUsers');
 
 
 $router->get('/testdb', 'UsersController::testdb');
