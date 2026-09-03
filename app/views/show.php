@@ -1141,7 +1141,7 @@
     displayTable();
 
 </script>
-```
+
 
 </body>
 
