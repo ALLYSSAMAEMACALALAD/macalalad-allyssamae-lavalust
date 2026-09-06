@@ -1,1065 +1,1091 @@
-<!DOCTYPE html>
+<?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+?>
 
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>User Management System</title>
-
-<style>
-    /* =========================
-       IMPORT FONT
-    ========================= */
-
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;600;700&display=swap');
-
-
-    /* =========================
-       ROOT COLORS
-    ========================= */
-
-    :root {
-        --bg-dark: #070b14;
-        --bg-card: #0d1424;
-        --bg-card-light: #111b2e;
-
-        --primary: #00a8ff;
-        --primary-dark: #0077b6;
-        --cyan: #00e5ff;
-
-        --text-main: #f1f5f9;
-        --text-muted: #94a3b8;
-
-        --border: rgba(0, 168, 255, 0.18);
-        --border-light: rgba(255, 255, 255, 0.08);
-
-        --danger: #ef4444;
-    }
-
-
-    /* =========================
-       RESET
-    ========================= */
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-
-    /* =========================
-       BODY
-    ========================= */
-
-    body {
-        min-height: 100vh;
-        padding: 40px;
-
-        font-family: "JetBrains Mono", monospace;
-        color: var(--text-main);
-
-        background:
-            radial-gradient(
-                circle at top right,
-                rgba(0, 168, 255, 0.12),
-                transparent 30%
-            ),
-            radial-gradient(
-                circle at bottom left,
-                rgba(0, 229, 255, 0.08),
-                transparent 30%
-            ),
-            var(--bg-dark);
-    }
-
-
-    /* =========================
-       BACKGROUND GRID
-    ========================= */
-
-    body::before {
-        content: "";
-
-        position: fixed;
-        inset: 0;
-
-        pointer-events: none;
-
-        background-image:
-            linear-gradient(
-                rgba(255, 255, 255, 0.025) 1px,
-                transparent 1px
-            ),
-            linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0.025) 1px,
-                transparent 1px
-            );
-
-        background-size: 40px 40px;
-
-        mask-image:
-            linear-gradient(
-                to bottom,
-                black,
-                transparent
-            );
-
-        z-index: -1;
-    }
-
-
-    /* =========================
-       CONTAINER
-    ========================= */
-
-    .container {
-        max-width: 1250px;
-        margin: auto;
-
-        padding: 28px;
-
-        background:
-            linear-gradient(
-                145deg,
-                rgba(17, 27, 46, 0.95),
-                rgba(8, 13, 25, 0.95)
-            );
-
-        border: 1px solid var(--border);
-        border-radius: 18px;
-
-        box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.02),
-            0 25px 60px rgba(0, 0, 0, 0.55),
-            0 0 40px rgba(0, 168, 255, 0.05);
-
-        backdrop-filter: blur(15px);
-    }
-
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        gap: 20px;
-
-        margin-bottom: 30px;
-        padding-bottom: 22px;
-
-        border-bottom:
-            1px solid var(--border-light);
-    }
-
-
-    /* =========================
-       SYSTEM TITLE
-    ========================= */
-
-    .system-title h2 {
-        font-family: "Orbitron", sans-serif;
-
-        font-size: 22px;
-        letter-spacing: 1px;
-
-        color: var(--text-main);
-    }
-
-
-    .system-title p {
-        margin-top: 7px;
-
-        color: var(--text-muted);
-
-        font-size: 12px;
-    }
-
-
-    .system-title span {
-        color: var(--cyan);
-    }
-
-
-    /* =========================
-       SEARCH
-    ========================= */
-
-    .search-box {
-        position: relative;
-        width: 360px;
-    }
-
-
-    .search-box input {
-        width: 100%;
-
-        padding:
-            13px
-            18px
-            13px
-            48px;
-
-        border:
-            1px solid var(--border-light);
-
-        border-radius: 10px;
-
-        outline: none;
-
-        background:
-            rgba(5, 10, 20, 0.8);
-
-        color:
-            var(--text-main);
-
-        font-family:
-            "JetBrains Mono",
-            monospace;
-
-        font-size: 13px;
-
-        transition:
-            0.25s ease;
-    }
-
-
-    .search-box input::placeholder {
-        color:
-            #64748b;
-    }
-
-
-    .search-box input:focus {
-        border-color:
-            var(--primary);
-
-        box-shadow:
-            0 0 0 3px
-            rgba(0, 168, 255, 0.12),
-            0 0 20px
-            rgba(0, 168, 255, 0.12);
-    }
-
-
-    .search-icon {
-        position: absolute;
-
-        left: 16px;
-        top: 50%;
-
-        transform:
-            translateY(-50%);
-
-        color:
-            var(--cyan);
-
-        font-size:
-            16px;
-    }
-
-
-    /* =========================
-       TABLE WRAPPER
-    ========================= */
-
-    .table-wrapper {
-        overflow-x: auto;
-
-        border:
-            1px solid var(--border-light);
-
-        border-radius:
-            12px;
-
-        background:
-            rgba(5, 10, 20, 0.35);
-    }
-
-
-    /* =========================
-       TABLE
-    ========================= */
-
-    table {
-        width: 100%;
-
-        border-collapse:
-            collapse;
-
-        min-width:
-            750px;
-    }
-
-
-    /* =========================
-       TABLE HEADER
-    ========================= */
-
-    thead {
-        background:
-            linear-gradient(
-                90deg,
-                rgba(0, 168, 255, 0.13),
-                rgba(0, 229, 255, 0.05)
-            );
-    }
-
-
-    th {
-        text-align:
-            left;
-
-        padding:
-            16px 18px;
-
-        color:
-            #7dd3fc;
-
-        font-family:
-            "Orbitron",
-            sans-serif;
-
-        font-size:
-            11px;
-
-        letter-spacing:
-            1px;
-
-        font-weight:
-            600;
-
-        border-bottom:
-            1px solid var(--border);
-    }
-
-
-    /* =========================
-       TABLE DATA
-    ========================= */
-
-    td {
-        padding:
-            17px 18px;
-
-        border-bottom:
-            1px solid
-            rgba(255, 255, 255, 0.05);
-
-        color:
-            #cbd5e1;
-
-        font-size:
-            13px;
-    }
-
-
-    /* =========================
-       TABLE ROW
-    ========================= */
-
-    tbody tr {
-        transition:
-            0.25s ease;
-    }
-
-
-    tbody tr:hover {
-        background:
-            linear-gradient(
-                90deg,
-                rgba(0, 168, 255, 0.08),
-                rgba(0, 229, 255, 0.03)
-            );
-
-        box-shadow:
-            inset 3px 0
-            0 var(--primary);
-    }
-
-
-    /* =========================
-       ID STYLE
-    ========================= */
-
-    td:first-child {
-        color:
-            var(--cyan);
-
-        font-weight:
-            600;
-    }
-
-
-    /* =========================
-       USERNAME
-    ========================= */
-
-    td:last-child {
-        color:
-            #60a5fa;
-
-        font-weight:
-            600;
-    }
-
-
-    /* =========================
-       PAGINATION
-    ========================= */
-
-    .pagination {
-        display:
-            flex;
-
-        justify-content:
-            flex-end;
-
-        align-items:
-            center;
-
-        gap:
-            7px;
-
-        margin-top:
-            24px;
-
-        flex-wrap:
-            wrap;
-    }
-
-
-    /* =========================
-       PAGINATION INFO
-    ========================= */
-
-    .pagination-info {
-        margin-right:
-            auto;
-
-        color:
-            var(--text-muted);
-
-        font-size:
-            12px;
-    }
-
-
-    #pageNumbers {
-        display:
-            flex;
-
-        gap:
-            7px;
-    }
-
-
-    /* =========================
-       PAGINATION BUTTON
-    ========================= */
-
-    .pagination button {
-        min-width:
-            40px;
-
-        height:
-            40px;
-
-        padding:
-            0 14px;
-
-        border:
-            1px solid
-            var(--border-light);
-
-        border-radius:
-            8px;
-
-        cursor:
-            pointer;
-
-        background:
-            #0b1220;
-
-        color:
-            #cbd5e1;
-
-        font-family:
-            "JetBrains Mono",
-            monospace;
-
-        font-size:
-            12px;
-
-        font-weight:
-            600;
-
-        transition:
-            0.2s ease;
-    }
-
-
-    .pagination button:hover:not(:disabled) {
-        border-color:
-            var(--primary);
-
-        color:
-            white;
-
-        background:
-            rgba(0, 168, 255, 0.12);
-
-        box-shadow:
-            0 0 15px
-            rgba(0, 168, 255, 0.15);
-    }
-
-
-    /* =========================
-       ACTIVE PAGE
-    ========================= */
-
-    .pagination button.active {
-        background:
-            linear-gradient(
-                135deg,
-                var(--primary),
-                var(--primary-dark)
-            );
-
-        border-color:
-            var(--primary);
-
-        color:
-            white;
-
-        box-shadow:
-            0 0 18px
-            rgba(0, 168, 255, 0.35);
-    }
-
-
-    /* =========================
-       DISABLED BUTTON
-    ========================= */
-
-    .pagination button:disabled {
-        opacity:
-            0.35;
-
-        cursor:
-            not-allowed;
-    }
-
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    .footer {
-        margin-top:
-            25px;
-
-        padding-top:
-            20px;
-
-        border-top:
-            1px solid
-            var(--border-light);
-
-        text-align:
-            center;
-
-        color:
-            #64748b;
-
-        font-size:
-            11px;
-
-        letter-spacing:
-            1px;
-    }
-
-
-    .footer span {
-        color:
-            var(--cyan);
-
-        font-weight:
-            bold;
-    }
-
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (max-width: 900px) {
+    <title>User Management System</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #08080d;
+            --bg-secondary: #0d0d14;
+            --panel: #111119;
+            --panel-hover: #161620;
+
+            --pink: #ff2d95;
+            --pink-light: #ff65b3;
+            --pink-dark: #d91673;
+
+            --purple: #9b5cff;
+            --cyan: #56e0ff;
+
+            --text: #f5f5f7;
+            --text-secondary: #a4a4b2;
+            --text-muted: #666674;
+
+            --border: #24242f;
+            --border-pink: rgba(255, 45, 149, 0.4);
+        }
 
         body {
-            padding:
-                20px;
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(255, 45, 149, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 45, 149, 0.025) 1px, transparent 1px),
+                var(--bg);
+            background-size: 40px 40px;
+
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
         }
 
+        /* =========================
+           TOP NAVIGATION
+        ========================= */
 
-        .header {
-            flex-direction:
-                column;
+        .topbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            align-items:
-                stretch;
+            padding: 0 6%;
+            background: rgba(8, 8, 13, 0.92);
+
+            border-bottom: 1px solid var(--border);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            backdrop-filter: blur(12px);
         }
 
-
-        .search-box {
-            width:
-                100%;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-    }
+        .brand-icon {
+            width: 34px;
+            height: 34px;
 
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    @media (max-width: 600px) {
+            border: 1px solid var(--pink);
+            color: var(--pink);
 
-        body {
-            padding:
-                12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+
+            box-shadow: 0 0 15px rgba(255, 45, 149, 0.18);
         }
 
+        .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .brand-text span {
+            color: var(--pink);
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+
+            letter-spacing: 0.5px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: #35e88b;
+            border-radius: 50%;
+
+            box-shadow: 0 0 10px rgba(53, 232, 139, 0.7);
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
 
         .container {
-            padding:
-                18px;
+            width: 88%;
+            max-width: 1250px;
 
-            border-radius:
-                12px;
+            margin: 0 auto;
+            padding: 55px 0 40px;
         }
 
+        /* =========================
+           PAGE HEADER
+        ========================= */
 
-        .system-title h2 {
-            font-size:
-                17px;
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            gap: 30px;
+            margin-bottom: 35px;
         }
 
+        .eyebrow {
+            color: var(--pink);
 
-        .pagination {
-            justify-content:
-                center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+
+            letter-spacing: 2px;
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
         }
 
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1;
+
+            letter-spacing: -2px;
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+
+            font-size: 14px;
+            margin-top: 13px;
+
+            max-width: 500px;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-box {
+            width: 310px;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 13px 16px;
+
+            background: var(--panel);
+
+            border: 1px solid var(--border);
+
+            transition: 0.25s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--border-pink);
+
+            box-shadow:
+                0 0 0 3px rgba(255, 45, 149, 0.06),
+                0 0 20px rgba(255, 45, 149, 0.08);
+        }
+
+        .search-icon {
+            color: var(--pink);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+        }
+
+        .search-box input {
+            width: 100%;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            color: var(--text);
+
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* =========================
+           TABLE CARD
+        ========================= */
+
+        .table-card {
+            background: rgba(17, 17, 25, 0.88);
+
+            border: 1px solid var(--border);
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 18px 22px;
+
+            border-bottom: 1px solid var(--border);
+
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .table-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .table-title::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+
+            background: var(--pink);
+
+            box-shadow: 0 0 10px rgba(255, 45, 149, 0.7);
+        }
+
+        .table-code {
+            color: var(--text-muted);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #0d0d14;
+        }
+
+        th {
+            padding: 15px 22px;
+
+            color: var(--text-muted);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+
+            text-align: left;
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            white-space: nowrap;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 17px 22px;
+
+            color: var(--text-secondary);
+
+            font-size: 13px;
+
+            border-bottom: 1px solid rgba(36, 36, 47, 0.65);
+
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            transition: 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 45, 149, 0.035);
+        }
+
+        tbody tr:hover td {
+            color: var(--text);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =========================
+           USER ID
+        ========================= */
+
+        .user-id {
+            color: var(--pink);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        /* =========================
+           USER NAME
+        ========================= */
+
+        .user-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 45, 149, 0.25),
+                    rgba(155, 92, 255, 0.25)
+                );
+
+            border: 1px solid rgba(255, 45, 149, 0.35);
+
+            color: var(--pink-light);
+
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           EMAIL
+        ========================= */
+
+        .email {
+            color: var(--text-secondary);
+        }
+
+        /* =========================
+           USERNAME
+        ========================= */
+
+        .username {
+            color: var(--cyan);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .username::before {
+            content: "@";
+            color: var(--text-muted);
+        }
+
+        /* =========================
+           PAGINATION
+        ========================= */
+
+        .pagination-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 17px 22px;
+
+            border-top: 1px solid var(--border);
+
+            background: rgba(255, 255, 255, 0.012);
+        }
 
         .pagination-info {
-            width:
-                100%;
+            color: var(--text-muted);
 
-            text-align:
-                center;
-
-            margin-right:
-                0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
         }
 
-    }
-</style>
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
+        .pagination button {
+            min-width: 32px;
+            height: 32px;
+
+            border: 1px solid var(--border);
+
+            background: transparent;
+
+            color: var(--text-secondary);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            border-color: var(--pink);
+            color: var(--pink);
+
+            background: rgba(255, 45, 149, 0.05);
+        }
+
+        .pagination button.active {
+            background: var(--pink);
+            border-color: var(--pink);
+
+            color: #ffffff;
+
+            box-shadow:
+                0 0 15px rgba(255, 45, 149, 0.25);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           NO RESULTS
+        ========================= */
+
+        .no-results {
+            text-align: center;
+
+            padding: 50px 20px;
+
+            color: var(--text-muted);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            margin-top: 45px;
+            padding: 25px 0;
+
+            border-top: 1px solid var(--border);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            color: var(--text-muted);
+
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+
+            letter-spacing: 0.5px;
+        }
+
+        .footer-name {
+            color: var(--pink);
+        }
+
+        .footer-tag {
+            color: var(--text-muted);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .topbar {
+                padding: 0 5%;
+            }
+
+            .container {
+                width: 92%;
+                padding-top: 35px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .table-card {
+                overflow: hidden;
+            }
+
+            .pagination-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .brand-text {
+                font-size: 13px;
+            }
+
+            .system-status {
+                display: none;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            th,
+            td {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-<div class="container">
-
 
     <!-- =========================
-         HEADER
+         TOP BAR
     ========================= -->
 
-    <div class="header">
+    <nav class="topbar">
 
-        <div class="system-title">
+        <div class="brand">
 
-            <h2>
-                USER <span>DATABASE</span>
-            </h2>
+            <div class="brand-icon">
+                U
+            </div>
 
-            <p>
-                SYSTEM ACCESS // USER MANAGEMENT
-            </p>
+            <div class="brand-text">
+                USER<span>.SYS</span>
+            </div>
 
         </div>
 
+        <div class="system-status">
 
-        <!-- SEARCH -->
+            <span class="status-dot"></span>
 
-        <div class="search-box">
-
-            <span class="search-icon">
-                🔍
-            </span>
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search users..."
-                onkeyup="searchEmployee()">
+            SYSTEM ONLINE
 
         </div>
 
-    </div>
-
-
-
-    <!-- =========================
-         USERS TABLE
-    ========================= -->
-
-    <div class="table-wrapper">
-
-        <table id="employeeTable">
-
-            <thead>
-
-                <tr>
-                    <th>USER ID</th>
-                    <th>FIRST NAME</th>
-                    <th>LAST NAME</th>
-                    <th>EMAIL ADDRESS</th>
-                    <th>USERNAME</th>
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                <?php foreach ($users as $user): ?>
-
-                    <tr>
-
-                        <td>
-                            #<?= htmlspecialchars($user['id']); ?>
-                        </td>
-
-                        <td>
-                            <?= htmlspecialchars($user['firstname']); ?>
-                        </td>
-
-                        <td>
-                            <?= htmlspecialchars($user['lastname']); ?>
-                        </td>
-
-                        <td>
-                            <?= htmlspecialchars($user['email']); ?>
-                        </td>
-
-                        <td>
-                            @<?= htmlspecialchars($user['username']); ?>
-                        </td>
-
-                    </tr>
-
-                <?php endforeach; ?>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
+    </nav>
 
 
     <!-- =========================
-         PAGINATION
+         MAIN
     ========================= -->
 
-    <div class="pagination">
+    <main class="container">
 
-        <div
-            class="pagination-info"
-            id="paginationInfo">
-        </div>
+        <!-- PAGE HEADER -->
+
+        <section class="page-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    USER MANAGEMENT / DATABASE
+                </div>
+
+                <h1>
+                    User Database
+                </h1>
+
+                <p class="page-description">
+                    View and manage registered users in the system.
+                </p>
+
+            </div>
 
 
-        <button
-            type="button"
-            id="prevPage"
-            onclick="changePage(-1)">
+            <!-- SEARCH -->
 
-            ← PREV
+            <div class="search-box">
 
-        </button>
+                <span class="search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search users..."
+                    onkeyup="searchEmployee()"
+                >
+
+            </div>
+
+        </section>
 
 
-        <div id="pageNumbers"></div>
+        <!-- =========================
+             TABLE
+        ========================= -->
+
+        <section class="table-card">
+
+            <div class="table-header">
+
+                <div class="table-title">
+                    REGISTERED USERS
+                </div>
+
+                <div class="table-code">
+                    /users
+                </div>
+
+            </div>
 
 
-        <button
-            type="button"
-            id="nextPage"
-            onclick="changePage(1)">
+            <div class="table-wrapper">
 
-            NEXT →
+                <table id="usersTable">
 
-        </button>
+                    <thead>
 
-    </div>
+                        <tr>
 
+                            <th>
+                                User ID
+                            </th>
+
+                            <th>
+                                First Name
+                            </th>
+
+                            <th>
+                                Last Name
+                            </th>
+
+                            <th>
+                                Email Address
+                            </th>
+
+                            <th>
+                                Username
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="userTableBody">
+
+                        <?php if (!empty($users)): ?>
+
+                            <?php foreach ($users as $user): ?>
+
+                                <tr>
+
+                                    <!-- USER ID -->
+
+                                    <td>
+                                        <span class="user-id">
+                                            #<?= htmlspecialchars($user['id']); ?>
+                                        </span>
+                                    </td>
+
+
+                                    <!-- FIRST NAME -->
+
+                                    <td>
+
+                                        <div class="user-name">
+
+                                            <div class="avatar">
+
+                                                <?= strtoupper(
+                                                    substr(
+                                                        htmlspecialchars($user['firstname']),
+                                                        0,
+                                                        1
+                                                    )
+                                                ); ?>
+
+                                            </div>
+
+                                            <?= htmlspecialchars($user['firstname']); ?>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- LAST NAME -->
+
+                                    <td>
+                                        <?= htmlspecialchars($user['lastname']); ?>
+                                    </td>
+
+
+                                    <!-- EMAIL -->
+
+                                    <td>
+
+                                        <span class="email">
+                                            <?= htmlspecialchars($user['email']); ?>
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- USERNAME -->
+
+                                    <td>
+
+                                        <span class="username">
+                                            <?= htmlspecialchars($user['username']); ?>
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        <?php else: ?>
+
+                            <tr>
+
+                                <td colspan="5">
+
+                                    <div class="no-results">
+                                        NO USERS FOUND
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endif; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- =========================
+                 PAGINATION
+            ========================= -->
+
+            <div class="pagination-container">
+
+                <div
+                    class="pagination-info"
+                    id="paginationInfo">
+                </div>
+
+
+                <div
+                    class="pagination"
+                    id="pagination">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FOOTER
+        ========================= -->
+
+        <footer>
+
+            <div>
+                SYSTEM // USER MANAGEMENT
+            </div>
+
+            <div>
+                DEVELOPED BY
+                <span class="footer-name">
+                    ALLYSSA MAE R. MACALALAD
+                </span>
+            </div>
+
+        </footer>
+
+    </main>
 
 
     <!-- =========================
-         FOOTER
+         JAVASCRIPT
     ========================= -->
 
-    <div class="footer">
+    <script>
 
-        DEVELOPED BY
-        <span>KEAN HAROLD B. MAGSINO</span>
+        const rowsPerPage = 5;
 
-        <br><br>
-
-        © 2026 USER MANAGEMENT SYSTEM
-
-    </div>
+        let currentPage = 1;
 
 
-</div>
+        /* =========================
+           GET FILTERED ROWS
+        ========================= */
 
+        function getFilteredRows() {
 
+            const searchValue =
+                document
+                    .getElementById("searchInput")
+                    .value
+                    .toLowerCase()
+                    .trim();
 
-<!-- =========================
-     SEARCH + PAGINATION SCRIPT
-========================= -->
+            const rows =
+                Array.from(
+                    document.querySelectorAll(
+                        "#userTableBody tr"
+                    )
+                );
 
-<script>
+            return rows.filter(row => {
 
-    const rowsPerPage = 5;
+                const text =
+                    row.textContent.toLowerCase();
 
-    let currentPage = 1;
+                return text.includes(searchValue);
 
-
-    /* =========================
-       GET FILTERED ROWS
-    ========================= */
-
-    function getFilteredRows() {
-
-        let input = document
-            .getElementById("searchInput")
-            .value
-            .toLowerCase()
-            .trim();
-
-
-        let rows = Array.from(
-            document.querySelectorAll(
-                "#employeeTable tbody tr"
-            )
-        );
-
-
-        return rows.filter(row => {
-
-            return row.innerText
-                .toLowerCase()
-                .includes(input);
-
-        });
-
-    }
-
-
-    /* =========================
-       DISPLAY TABLE
-    ========================= */
-
-    function displayTable() {
-
-        let allRows = Array.from(
-            document.querySelectorAll(
-                "#employeeTable tbody tr"
-            )
-        );
-
-
-        let filteredRows =
-            getFilteredRows();
-
-
-        let totalPages = Math.max(
-            1,
-            Math.ceil(
-                filteredRows.length /
-                rowsPerPage
-            )
-        );
-
-
-        if (currentPage > totalPages) {
-
-            currentPage = totalPages;
+            });
 
         }
 
 
-        /* HIDE ALL ROWS */
+        /* =========================
+           DISPLAY TABLE
+        ========================= */
 
-        allRows.forEach(row => {
+        function displayTable() {
 
-            row.style.display = "none";
+            const allRows =
+                Array.from(
+                    document.querySelectorAll(
+                        "#userTableBody tr"
+                    )
+                );
 
-        });
-
-
-        /* CALCULATE ROWS */
-
-        let start =
-            (currentPage - 1) *
-            rowsPerPage;
-
-
-        let end =
-            start +
-            rowsPerPage;
+            const filteredRows =
+                getFilteredRows();
 
 
-        /* SHOW CURRENT PAGE */
+            /*
+             * Hide all rows first
+             */
 
-        filteredRows
-            .slice(start, end)
-            .forEach(row => {
+            allRows.forEach(row => {
 
-                row.style.display = "";
+                row.style.display = "none";
 
             });
 
 
-        renderPagination(
-            totalPages,
-            filteredRows.length
-        );
+            /*
+             * If no results
+             */
 
-    }
+            if (filteredRows.length === 0) {
 
+                document.getElementById("pagination").innerHTML = "";
 
-    /* =========================
-       RENDER PAGINATION
-    ========================= */
+                document.getElementById("paginationInfo").textContent =
+                    "0 USERS";
 
-    function renderPagination(
-        totalPages,
-        totalRows
-    ) {
-
-        let pageNumbers =
-            document.getElementById(
-                "pageNumbers"
-            );
-
-
-        let paginationInfo =
-            document.getElementById(
-                "paginationInfo"
-            );
-
-
-        let prevPage =
-            document.getElementById(
-                "prevPage"
-            );
-
-
-        let nextPage =
-            document.getElementById(
-                "nextPage"
-            );
-
-
-        pageNumbers.innerHTML = "";
-
-
-        /* NO USERS */
-
-        if (totalRows === 0) {
-
-            paginationInfo.textContent =
-                "NO USERS FOUND";
-
-        }
-
-
-        /* USERS EXIST */
-
-        else {
-
-            let start =
-                (currentPage - 1) *
-                rowsPerPage + 1;
-
-
-            let end =
-                Math.min(
-                    currentPage *
-                    rowsPerPage,
-                    totalRows
-                );
-
-
-            paginationInfo.textContent =
-                `SHOWING ${start}-${end} OF ${totalRows} USERS`;
-
-        }
-
-
-        /* PREVIOUS BUTTON */
-
-        prevPage.disabled =
-            currentPage === 1;
-
-
-        /* NEXT BUTTON */
-
-        nextPage.disabled =
-            currentPage === totalPages;
-
-
-        /* PAGE NUMBERS */
-
-        for (
-            let i = 1;
-            i <= totalPages;
-            i++
-        ) {
-
-            let button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.type =
-                "button";
-
-
-            button.textContent =
-                i;
-
-
-            if (i === currentPage) {
-
-                button.classList.add(
-                    "active"
-                );
+                return;
 
             }
 
 
-            button.onclick =
-                function() {
+            /*
+             * Calculate pages
+             */
+
+            const totalPages =
+                Math.ceil(
+                    filteredRows.length / rowsPerPage
+                );
+
+
+            /*
+             * Make sure current page is valid
+             */
+
+            if (currentPage > totalPages) {
+
+                currentPage = totalPages;
+
+            }
+
+            if (currentPage < 1) {
+
+                currentPage = 1;
+
+            }
+
+
+            /*
+             * Determine visible rows
+             */
+
+            const start =
+                (currentPage - 1) * rowsPerPage;
+
+            const end =
+                start + rowsPerPage;
+
+
+            filteredRows
+                .slice(start, end)
+                .forEach(row => {
+
+                    row.style.display = "";
+
+                });
+
+
+            /*
+             * Pagination
+             */
+
+            renderPagination(
+                totalPages,
+                filteredRows.length
+            );
+
+        }
+
+
+        /* =========================
+           PAGINATION
+        ========================= */
+
+        function renderPagination(totalPages, totalRows) {
+
+            const pagination =
+                document.getElementById("pagination");
+
+            pagination.innerHTML = "";
+
+
+            /*
+             * Previous button
+             */
+
+            const prevButton =
+                document.createElement("button");
+
+            prevButton.textContent = "‹";
+
+            prevButton.disabled =
+                currentPage === 1;
+
+            prevButton.onclick = function () {
+
+                changePage(-1);
+
+            };
+
+            pagination.appendChild(prevButton);
+
+
+            /*
+             * Page numbers
+             */
+
+            for (
+                let i = 1;
+                i <= totalPages;
+                i++
+            ) {
+
+                const pageButton =
+                    document.createElement("button");
+
+                pageButton.textContent = i;
+
+
+                if (i === currentPage) {
+
+                    pageButton.classList.add("active");
+
+                }
+
+
+                pageButton.onclick = function () {
 
                     currentPage = i;
 
@@ -1068,80 +1094,87 @@
                 };
 
 
-            pageNumbers.appendChild(
-                button
-            );
+                pagination.appendChild(pageButton);
+
+            }
+
+
+            /*
+             * Next button
+             */
+
+            const nextButton =
+                document.createElement("button");
+
+            nextButton.textContent = "›";
+
+            nextButton.disabled =
+                currentPage === totalPages;
+
+            nextButton.onclick = function () {
+
+                changePage(1);
+
+            };
+
+            pagination.appendChild(nextButton);
+
+
+            /*
+             * Pagination information
+             */
+
+            const start =
+                (currentPage - 1) * rowsPerPage + 1;
+
+            const end =
+                Math.min(
+                    currentPage * rowsPerPage,
+                    totalRows
+                );
+
+
+            document.getElementById(
+                "paginationInfo"
+            ).textContent =
+                `${start}-${end} OF ${totalRows} USERS`;
 
         }
 
-    }
+
+        /* =========================
+           CHANGE PAGE
+        ========================= */
+
+        function changePage(direction) {
+
+            currentPage += direction;
+
+            displayTable();
+
+        }
 
 
-    /* =========================
-       CHANGE PAGE
-    ========================= */
+        /* =========================
+           SEARCH
+        ========================= */
 
-    function changePage(direction) {
-
-        let filteredRows =
-            getFilteredRows();
-
-
-        let totalPages =
-            Math.max(
-                1,
-                Math.ceil(
-                    filteredRows.length /
-                    rowsPerPage
-                )
-            );
-
-
-        currentPage +=
-            direction;
-
-
-        if (currentPage < 1) {
+        function searchEmployee() {
 
             currentPage = 1;
 
-        }
-
-
-        if (currentPage > totalPages) {
-
-            currentPage =
-                totalPages;
+            displayTable();
 
         }
 
 
-        displayTable();
-
-    }
-
-
-    /* =========================
-       SEARCH
-    ========================= */
-
-    function searchEmployee() {
-
-        currentPage = 1;
+        /* =========================
+           INITIALIZE
+        ========================= */
 
         displayTable();
 
-    }
-
-
-    /* =========================
-       INITIAL LOAD
-    ========================= */
-
-    displayTable();
-
-</script>
-
+    </script>
 
 </body>
 
