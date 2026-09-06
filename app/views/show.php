@@ -874,7 +874,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             <div>
                 DEVELOPED BY
                 <span class="footer-name">
-                    ALLYSSA MAE R. MACALALAD
+                    ALLYSSA MAE MACALALAD
                 </span>
             </div>
 
@@ -939,7 +939,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                     )
                 );
 
-            const filteredRows =
+            const filteredRows 
                 getFilteredRows();
 
 
