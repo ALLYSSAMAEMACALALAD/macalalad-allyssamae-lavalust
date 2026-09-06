@@ -9,7 +9,6 @@ define('COMMANDS_DIR', APP_DIR . 'commands' . DIRECTORY_SEPARATOR);
 
 // Command Registry
 $commands = [];
-
 // Register built-in commands
 register_command('run', 'handle_run_command', 'Start PHP built-in development server', [
     '[port]'         => 'Port number (default: 3000)',

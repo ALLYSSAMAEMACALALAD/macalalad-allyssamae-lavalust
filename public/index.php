@@ -45,7 +45,7 @@ define('PREVENT_DIRECT_ACCESS', TRUE);
  * 
  * NO TRAILING SLASH!
  */
-	$system_path 			= 'scheme';
+	$system_path 		= 'scheme';
 
 /*
  *---------------------------------------------------------------

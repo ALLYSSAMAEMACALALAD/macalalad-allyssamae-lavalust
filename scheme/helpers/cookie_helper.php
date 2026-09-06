@@ -51,8 +51,7 @@ if ( ! function_exists('set_cookie'))
 }
 
 if ( ! function_exists('get_cookie'))
-{
-	/**
+{/**
 	 * Fetch an item from the COOKIE array
 	 *
 	 * @param  string  $name name of the cookie

@@ -9,7 +9,6 @@ class Initial_setup {
         $this->_lava = lava_instance();
         $this->_lava->call->dbforge();
     }
-
     public function up()
     {
         if ($this->_lava->dbforge->table_exists('migrations')) {
@@ -18,7 +17,8 @@ class Initial_setup {
 
         $this->_lava->dbforge
             ->add_field([
-                'id' => [
+                'id' =>
+                 [
                     'type'           => 'INT',
                     'unsigned'       => TRUE,
                     'auto_increment' => TRUE,

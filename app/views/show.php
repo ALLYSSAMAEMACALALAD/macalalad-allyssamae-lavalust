@@ -877,9 +877,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                     ALLYSSA MAE MACALALAD
                 </span>
             </div>
-
         </footer>
-
     </main>
 
 

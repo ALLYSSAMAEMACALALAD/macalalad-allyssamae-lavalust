@@ -38,7 +38,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 * ------------------------------------------------------
 *  Class Database
 * ------------------------------------------------------
- */
 class Database {
     /**
      * Database instance
