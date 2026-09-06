@@ -21,7 +21,6 @@ AddDefaultCharset UTF-8
     # --------------------------------------------------
     # Prevent directory browsing
     Options -Indexes
-
     # --------------------------------------------------
     # Route all requests through public/index.php
     RewriteCond %{REQUEST_URI} !^/public/

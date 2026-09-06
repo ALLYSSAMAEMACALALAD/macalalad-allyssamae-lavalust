@@ -15,7 +15,6 @@
 Whether you are building a simple web application, a REST API, or a teaching project, LavaLust provides the right tools with minimal friction.
 
 ---
-
 ## Features
 
 | Feature | Description |
