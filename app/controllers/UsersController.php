@@ -1,11 +1,7 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') or exit('No direct script access allowed');
 
-/**
- * Controller: UsersController
- * 
- * Automatically generated via CLI.
- */
+
 class UsersController extends Controller
 {
     public function __construct()
@@ -29,6 +25,6 @@ class UsersController extends Controller
     {
         $data['users'] = $this->UsersModel->all();
 
-        $this->call->view('show', $data);
+        $this->call->view('show',$data);
     }
 }
